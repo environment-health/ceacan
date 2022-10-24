@@ -1,0 +1,19 @@
+data_workflow:
+  parameters: 
+    crs: 4326
+    bbox:
+      xmin:
+      ymin:
+      xmax:
+      ymax:  
+  data_pipelines:
+    - "70efb2b0" # Native Land Digital
+    - "ce594316" # First Nations Location
+    - "621e9a76" # Inuit Communities Location
+    - "786f7481" # Aboriginal Lands of Canada Legislative Boundaries
+    - "7a44eaf0" # Tribal Councils Location
+    - "3fa4aeb6" # Inuit Regions
+    - "e328da3a" # Community Well-Being Index
+    - "b5433840" # Geolocated placenames in Canada
+  integration_pipelines:
+    # - "e2b7e6c4" # Fisheries
