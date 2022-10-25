@@ -15,5 +15,6 @@ data_workflow:
     - "3fa4aeb6" # Inuit Regions
     - "e328da3a" # Community Well-Being Index
     - "b5433840" # Geolocated placenames in Canada
+    - "a56e753b" # Covid Timeline Canada
   integration_pipelines:
     # - "e2b7e6c4" # Fisheries
