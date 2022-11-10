@@ -1,0 +1,42 @@
+pipeline:
+  pipeline_id: ee7295d7
+  pipeline_type: data
+  creators:
+  - contact_id: 1
+    first_name: David
+    last_name: Beauchesne
+    organization: Universite Laval
+    department: Department of Biology
+    role: Postdoctoral researcher
+    email: david.beauchesne@hotmail.com
+    phone: 1-514-553-4974
+  date_created: '2022-11-10'
+  url: https://github.com/Ecosystem-Assessments/pipedat/blob/main/R/dp_proximiry_measures_database-ee7295d7.R
+  pipeline_bbox_crs: 4326
+description:
+  name: Proximity measures database
+  description: Statistics Canada (StatCan) and Canada Mortgage and Housing Corporation
+    (CMHC) have collaborated on the implementation of a set of proximity measures
+    to services and amenities. CMHC funded this collaboration to generate data and
+    analytical work in support of the National Housing Strategy.
+  access_date: '2022-11-10'
+  contacts:
+  - contact_id: 68
+    first_name: Marian
+    last_name: Radulescu
+    organization: Statistics Canada
+    department: ''
+    role: Chief
+    email: marian.radulescu@canada.ca
+    phone: ''
+  citekey:
+  - statisticscanada2020c
+  - statisticscanada2020d
+  bbox:
+  - -2341202.7341919
+  - -724241.7398071
+  - 3010736.9390869
+  - 3833728.6951294
+  url: https://open.canada.ca/data/en/dataset/a2093d3a-7597-456a-bacf-c6a7f319ddcb
+  uuid: a2093d3a-7597-456a-bacf-c6a7f319ddcb
+  availability: open
