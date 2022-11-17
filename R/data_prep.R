@@ -9,17 +9,47 @@ data_prep <- function() {
   # Data import and format
   ## Geolocated placenames 
   placenames <- importdat("b5433840")[[1]] |>
-                dplyr::select(pnuid = PNuid_NLidu, name = Name_en)
+                dplyr::select(uid = PNuid_NLidu, name = Name_en) |>
+                dplyr::mutate(
+                  uid = as.character(uid),
+                  type = "Geolocated placenames"
+                )
                 
   ## First Nations location
-  fn <- importdat("ce594316")
+  fn <- importdat("ce594316")[[1]] |>
+        dplyr::select(uid = BAND_NBR, name = BAND_NAME) |>
+        dplyr::mutate(
+          uid = as.character(uid),
+          type = "First Nations"
+        ) 
   
   ## Inuit communities location
-  ic <- importdat("621e9a76")
+  ic <- importdat("621e9a76")[[1]] |>
+        dplyr::select(uid = ID, name = NAME) |>
+        dplyr::mutate(type = "Inuit communities")
+  
+  ## Combine 
+  placenames <- dplyr::bind_rows(placenames, fn, ic)
   
   ## Covid data
   covid <- importdat("a56e753b")
   hr <- covid[["covid_timeline_canada-a56e753b-health_regions_wgs84.geojson"]]
+  hrpop <- covid[["covid_timeline_canada-a56e753b-health_regions.csv"]] |>
+           dplyr::select(hruid, pop) |>
+           dplyr::mutate(hruid = as.character(hruid))
+           
+  ### NOTE: First go at cases and deaths, just take the cumulative total 
+  cases <- covid[["covid_timeline_canada-a56e753b-CovidTimelineCanada_hr.csv"]] |>
+           dplyr::group_by(name, sub_region_1) |>
+           dplyr::summarize(value = max(value)) |>
+           dplyr::ungroup()
+  uid <- cases$name == "cases"
+  deaths <- cases[!uid, ] |>
+            dplyr::select(hruid = sub_region_1, deaths = value) |>
+            dplyr::mutate(hruid = as.character(hruid))
+  cases <- cases[uid, ] |>
+           dplyr::select(hruid = sub_region_1, cases = value) |>
+           dplyr::mutate(hruid = as.character(hruid))
   
   ## Proximity measures data 
   px <- importdat("ee7295d7")
@@ -66,7 +96,7 @@ data_prep <- function() {
   dplyr::mutate(
     percent_household_not_suitable = 
       household_size_not_suitable / 
-      (household_size_suitable + household_size_not_suitable)
+      (household_size_suitable + household_size_not_suitable),
     household_not_suitable = percent_household_not_suitable / 
                              max(percent_household_not_suitable, na.rm = TRUE)
   ) |>
@@ -102,7 +132,7 @@ data_prep <- function() {
   dplyr::mutate(
     percent_major_repairs_needed = 
       major_repairs_needed / 
-      (regular_maintenance_needed + minor_repairs_needed + major_repairs_needed)
+      (regular_maintenance_needed + minor_repairs_needed + major_repairs_needed),
     major_repairs_needed = percent_major_repairs_needed / max(percent_major_repairs_needed, na.rm = TRUE)
   ) |>
   dplyr::select(
@@ -204,13 +234,23 @@ data_prep <- function() {
   
   ## Acceptable housing
   placenames <- dplyr::left_join(placenames, ah, by = c("dguig" = "DGUID"))
+  
+  ## Covid cases 
+  placenames <- dplyr::left_join(placenames, cases, by = "hruid")
+
+  ## Covid deaths
+  placenames <- dplyr::left_join(placenames, deaths, by = "hruid")
+  
+  ## Covid populations
+  placenames <- dplyr::left_join(placenames, hrpop, by = "hruid")
+  
   # ------------------------------------------------------------------------------------------------
   
   # ================================================================================================
   # Calculate distances 
   # WARNING: max_dist is completely arbitrary
   dist_calc <- function(pts, max_dist = 250) {
-    dat <- sf::st_distance(placenames, wtd) |>
+    dat <- sf::st_distance(placenames, pts) |>
            units::set_units("km") |>
            apply(MARGIN = 1, FUN = min)
     # Cap to max dist
@@ -229,6 +269,6 @@ data_prep <- function() {
   # Export data 
   output <- here::here("data","data-format")
   if (!file.exists(output)) dir.create(output)
-  sf::st_write(placenames, here::here(output,"exposure.geojson"))
+  sf::st_write(placenames, here::here(output,"exposure.geojson"), delete_dsn = TRUE)
   # ------------------------------------------------------------------------------------------------
 }
