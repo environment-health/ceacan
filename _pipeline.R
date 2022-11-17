@@ -13,4 +13,7 @@ pipeline <- function() {
 
   # Integrate data 
   pipedat::pipeflow("./data/data-config/pipedat.yml")
+  
+  # Prepare data 
+  data_prep()
 }

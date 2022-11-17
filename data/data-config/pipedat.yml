@@ -25,5 +25,7 @@ data_workflow:
     - "f4abec86" # Census 2021 acceptable housing
     - "b9024b04" # Census cartographic boundary files 2021
     - "5e4be996" # Census cartographic subdivision boundary files 2021
+    # - "929a1773" # Census water treatment NOTE: Probably too coarse
+    # - "000fd656" # Census cartographic subdivision boundary files 2016 NOTE: Not needed anymore
   integration_pipelines:
     # - "e2b7e6c4" # Fisheries
