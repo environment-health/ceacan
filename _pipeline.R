@@ -14,6 +14,9 @@ pipeline <- function() {
   # Integrate data 
   pipedat::pipeflow("./data/data-config/pipedat.yml")
   
+  # Single bibtex file 
+  getBib()
+  
   # Prepare data 
   data_prep()
 }

@@ -1,6 +1,24 @@
 ---
 title: covidfn
+author: "David Beauchesne"
+date: "`r Sys.Date()`"
+knit: "bookdown::render_book"
+documentclass: scrbook
+bibliography: [covidfn.bib]
+# biblio-style: apalike
+csl: frontiers.csl
+link-citations: yes
+colorlinks: yes
+fontsize: 12pt
+monofont: "Courier"
+monofontoptions: "Scale=0.7"
+site: bookdown::bookdown_site
+always_allow_html: true
 ---
+
+<!-- 
+suppressWarnings(bookdown::render_book("index.Rmd", "bookdown::gitbook"))
+-->
 
 # Project description
 
@@ -28,6 +46,26 @@ The [First Nations location](https://open.canada.ca/data/en/dataset/b6567c5c-833
 The [Inuit Communities location](https://open.canada.ca/data/en/dataset/2bcf34b5-4e9a-431b-9e43-1eace6c873bd) dataset was used to identify the locations of Inuit communities across Canada [@cirnac2020]. This dataset contains the location of 53 Inuit Communities. As with the First Nations location dataset, the Inuit Communities locations are included in the geolocated placenames, yet we used this dataset to be certain of Inuit Community names. The same approach was used to integrate both datasets together (see previous section).
 
 ### Social vulnerabilities
+
+So far, we characterized social vulnerabilities using three main sources of data to obtain the following list: 
+
+- Proximity to employment
+- Proximity to grocery stores
+- Proximity to pharmacies
+- Proximity to health care
+- Proximity to child care
+- Proximity to primary education
+- Proximity to secondary education
+- Proximity to public transit
+- Proximity to neighborhood parks
+- Proximity to libraries
+- Dwelling condition
+- Housing suitability
+- Acceptable housing
+- Proximity to waste treatment and disposal facilities
+- Proximity to water and wastewater systems
+
+Below is a brief description of the data and how the were processes.
 
 #### Proximity measures database 
 
@@ -61,16 +99,19 @@ For each of the housing statistics considered, we evaluated the percent of socia
 We characterized accessibility to water and wastewater systems using the [National Pollutant Release Inventory (NPRI)](https://open.canada.ca/data/en/dataset/40e01423-7728-429c-ac9d-2954385ccdfb) [@eccc2022]. The NPRI dataset provides an inventory of pollutant releases, disposals and transfers for recycling between 1993 and 2020. The dataset contains the locations of all reporting facilities and the types of sectors to which they belong. We extracted all reporting facilities that belonged 1) to Waste Treatment and Disposal and 2) to Water and Wastewater Systems to identify the locations of such facilities across Canada. We then measured the distance of each Canadian community to the locations of reporting facilities. Canadian communities located beyond 250 km of a facility were given the value of 250 to cap the maximum distance considered. All distances were then normalized by dividing by 250 to obtain an index between 0 and 1, with Canadian communities closest to water and wastewater systems receiving a value of 1, and those farthest a value of 1. 
 
 
-### Covid data 
+### COVID-19 data 
 
-The COVID
-
+The COVID-19 data used comes from an initiative called the [Timeline of COVID-19 in Canada (`CovidTimelineCanada`)](https://github.com/ccodwg/CovidTimelineCanada) [@CovidTimelineCanada]. This data repository is the result of the integration of multiple datasets nationally and provide data that is updated daily for all of Canada. The data are available at the scales of Canada, of the provinces/territories, and of the health regions. Here, we used the data at the health region scale, which is provided for daily cases and deaths from 2020-01-24 to today. For more information, visit the [CovidTimelineCanada](https://github.com/ccodwg/CovidTimelineCanada) GitHub repository.
 
 ## Data transformation 
 
 All social vulnerabilities considered are relative and range from 0 to 1. A value of 0 means that a community is least vunerable, while a value of 1 means that a community is most vulnerable compared to other communities across the country. 
 
+# Exploration
 
+## Spatial distribution of cumulative vulnerabilities 
+
+![]("../figures/cumulative_exposure.png")
 
 
 
