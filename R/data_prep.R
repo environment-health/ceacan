@@ -21,15 +21,22 @@ data_prep <- function() {
         dplyr::mutate(
           uid = as.character(uid),
           type = "First Nations"
-        ) 
+        ) |>
+        sf::st_transform(crs = 4326)
   
   ## Inuit communities location
   ic <- importdat("621e9a76")[[1]] |>
         dplyr::select(uid = ID, name = NAME) |>
-        dplyr::mutate(type = "Inuit communities")
+        dplyr::mutate(type = "Inuit communities") |>
+        sf::st_transform(crs = 4326)
   
   ## Combine 
-  placenames <- dplyr::bind_rows(placenames, fn, ic)
+  uid <- c(
+    sf::st_nearest_feature(fn, placenames),
+    sf::st_nearest_feature(ic, placenames)
+  ) |>
+  unique()
+  placenames <- dplyr::bind_rows(placenames[-uid, ], fn, ic)
   
   ## Covid data
   covid <- importdat("a56e753b")
