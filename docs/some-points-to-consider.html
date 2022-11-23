@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Some points to consider | covidfn</title>
+  <meta name="description" content="4 Some points to consider | covidfn" />
+  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Some points to consider | covidfn" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Some points to consider | covidfn" />
+  
+  
+  
+
+<meta name="author" content="David Beauchesne" />
+
+
+<meta name="date" content="2022-11-23" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="exploration.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 1em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Project description<span></span></a></li>
+<li class="chapter" data-level="2" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>2</b> Methods<span></span></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="methods.html"><a href="methods.html#data"><i class="fa fa-check"></i><b>2.1</b> Data<span></span></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="methods.html"><a href="methods.html#canadian-communities"><i class="fa fa-check"></i><b>2.1.1</b> Canadian communities<span></span></a></li>
+<li class="chapter" data-level="2.1.2" data-path="methods.html"><a href="methods.html#social-vulnerabilities"><i class="fa fa-check"></i><b>2.1.2</b> Social vulnerabilities<span></span></a></li>
+<li class="chapter" data-level="2.1.3" data-path="methods.html"><a href="methods.html#covid-19-data"><i class="fa fa-check"></i><b>2.1.3</b> COVID-19 data<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="methods.html"><a href="methods.html#data-transformation"><i class="fa fa-check"></i><b>2.2</b> Data transformation<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>3</b> Exploration<span></span></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="exploration.html"><a href="exploration.html#spatial-distribution"><i class="fa fa-check"></i><b>3.1</b> Spatial distribution<span></span></a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="exploration.html"><a href="exploration.html#cumulative-vulnerabilities"><i class="fa fa-check"></i><b>3.1.1</b> Cumulative vulnerabilities<span></span></a></li>
+<li class="chapter" data-level="3.1.2" data-path="exploration.html"><a href="exploration.html#cumulative-covid-19-cases"><i class="fa fa-check"></i><b>3.1.2</b> Cumulative COVID-19 cases<span></span></a></li>
+<li class="chapter" data-level="3.1.3" data-path="exploration.html"><a href="exploration.html#cumulative-covid-19-deaths"><i class="fa fa-check"></i><b>3.1.3</b> Cumulative COVID-19 deaths<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="exploration.html"><a href="exploration.html#covid-19-cases-social-vulnerabilities"><i class="fa fa-check"></i><b>3.2</b> COVID-19 cases ~ social vulnerabilities<span></span></a></li>
+<li class="chapter" data-level="3.3" data-path="exploration.html"><a href="exploration.html#covid-19-deaths-social-vulnerabilities"><i class="fa fa-check"></i><b>3.3</b> COVID-19 deaths ~ social vulnerabilities<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="some-points-to-consider.html"><a href="some-points-to-consider.html"><i class="fa fa-check"></i><b>4</b> Some points to consider<span></span></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="some-points-to-consider.html"><a href="some-points-to-consider.html#downscaling"><i class="fa fa-check"></i><b>4.1</b> Downscaling<span></span></a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">covidfn</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="some-points-to-consider" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Some points to consider<a href="some-points-to-consider.html#some-points-to-consider" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="downscaling" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Downscaling<a href="some-points-to-consider.html#downscaling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It might be interesting to downscale the analysis to Statistics Canada’s census subdivision scale. An example of such an approach was used by <span class="citation">(<a href="#ref-adegun2021" role="doc-biblioref"><strong>adegun2021?</strong></a>)</span> in Manitoba. Before I can do that, however, I would need to rework the health regions provided by the <a href="https://github.com/ccodwg/CovidTimelineCanada">covidtimelinecanada</a> project, since they are not the same as the health regions from Statistics Canada. There is a short <a href="https://github.com/ccodwg/CovidTimelineCanada/tree/main/geo">description</a> of the modifications made to the shapefiles in the covidtimelinecanada project, but essentially it boils down to Saskatchewan and British-Columbia having different covid reporting regions than the Statistics Canada health regions. Furthermore, the outline of health regions from the covid data is too simplified, I’m losing a lot of data along the coast. This means that I must either modify the polygons, or use an analysis to identify the closest polygons to each placenames rather than an intersect approach.</p>
+
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="1" line-spacing="5">
+<div class="csl-entry">
+Berry, I., O’Neill, M., Sturrock, S. L., Wright, J. E., Acharya, K., Brankston, G., et al. (2021). A sub-national real-time epidemiological and vaccination database for the <span>COVID-19</span> pandemic in <span>Canada</span>. <em>Scientific Data</em> 8. doi:<a href="https://doi.org/10.1038/s41597-021-00955-2">10.1038/s41597-021-00955-2</a>.
+</div>
+<div class="csl-entry">
+Canada, I. S. (2022a). First <span>Nations Location</span>. <span>Indigenous Services Canada</span>.
+</div>
+<div class="csl-entry">
+Canada, S. (2020a). Proximity measures database. <span>Concise</span> description of the database and methods. Url: <span class="nocase">https://www150.statcan.gc.ca/n1/pub/17-26-0002/172600022020001-eng.htm</span>. <span>Statistics Canada</span>.
+</div>
+<div class="csl-entry">
+Canada, S. (2020b). Proximity measures database. Url: <span class="nocase">https://open.canada.ca/data/en/dataset/a2093d3a-7597-456a-bacf-c6a7f319ddcb</span>. <span>Statistics Canada</span>.
+</div>
+<div class="csl-entry">
+Canada, S. (2022b). 2021 <span>Census</span> - <span>Boundary</span> files. <span>Statistics Canada</span>.
+</div>
+<div class="csl-entry">
+Canada, S. (2022c). 2021 <span>Census</span> - <span>Boundary</span> files. <span>Cartographic Boundary Files</span>, <span>Census</span> subdivisions. Url: <span class="nocase">https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcsd000b21a_e.zip</span>. <span>Statistics Canada</span>.
+</div>
+<div class="csl-entry">
+Canada, S. (2022d). Table 98-10-0233-01 <span>Dwelling</span> condition by tenure: <span>Canada</span>, provinces and territories, census divisions and census subdivisions. Url: <span class="nocase">https://www150.statcan.gc.ca/n1/tbl/csv/98100233-eng.zip.</span> Doi: <span class="nocase">https://doi.org/10.25318/9810023301-eng</span>. <span>Statistics Canada</span>.
+</div>
+<div class="csl-entry">
+Canada, S. (2022e). Table 98-10-0237-01 <span>Housing</span> suitability by tenure: <span>Canada</span>, provinces and territories, census divisions and census subdivisions. Url: <span class="nocase">https://www150.statcan.gc.ca/n1/tbl/csv/98100237-eng.zip.</span> Doi: <span class="nocase">https://doi.org/10.25318/9810023701-eng</span>. <span>Statistics Canada</span>.
+</div>
+<div class="csl-entry">
+Canada, S. (2022f). Table 98-10-0246-01 <span>Acceptable</span> housing by tenure: <span>Canada</span>, provinces and territories, census divisions and census subdivisions. Url: <span class="nocase">https://www150.statcan.gc.ca/n1/tbl/csv/98100246-eng.zip.</span> Doi: <span class="nocase">https://doi.org/10.25318/9810024601-eng</span>. <span>Statistics Canada</span>.
+</div>
+<div class="csl-entry">
+Environment, and limate Change Canada (2022). National <span>Pollutant Release Inventory</span> url: <span class="nocase">https://open.canada.ca/data/en/dataset/40e01423-7728-429c-ac9d-2954385ccdfb</span>. <span>Environment and Climate Change Canada</span>.
+</div>
+<div class="csl-entry">
+Relations, C.-I., and orthern Affairs Canada (2020). Inuit <span>Communities Location</span>. Url: <span class="nocase">https://open.canada.ca/data/en/dataset/2bcf34b5-4e9a-431b-9e43-1eace6c873bd</span>. <span>Indigenous Services Canada</span>.
+</div>
+<div class="csl-entry">
+Science, and Innovation, E. D. C. (2020). Geolocated placenames in <span>Canada</span>. <span class="nocase">https://open.canada.ca/data/en/dataset/fe945388-1dd9-4a4a-9a1e-5c552579a28c</span>. <span>Innovation, Science and Economic Development Canada</span>.
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exploration.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

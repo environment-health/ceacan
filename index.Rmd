@@ -20,6 +20,23 @@ always_allow_html: true
 suppressWarnings(bookdown::render_book("index.Rmd", "bookdown::gitbook"))
 -->
 
+```{r setup, include = FALSE, purl = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  echo = FALSE,
+  message = FALSE,
+  dev = "png",
+  dpi = 108,
+  fig.width = 8,
+  fig.height = 6,
+  fig.align = 'center',
+  width = 120#,
+  # table.attr = 'class="flat-table"'
+)
+```
+
 # Project description
 
 The goal of this project is to do an assessment of the exposure of canadian communities to social pressures in the context of the covid pandemic. 
@@ -103,27 +120,59 @@ We characterized accessibility to water and wastewater systems using the [Nation
 
 The COVID-19 data used comes from an initiative called the [Timeline of COVID-19 in Canada (`CovidTimelineCanada`)](https://github.com/ccodwg/CovidTimelineCanada) [@CovidTimelineCanada]. This data repository is the result of the integration of multiple datasets nationally and provide data that is updated daily for all of Canada. The data are available at the scales of Canada, of the provinces/territories, and of the health regions. Here, we used the data at the health region scale, which is provided for daily cases and deaths from 2020-01-24 to today. For more information, visit the [CovidTimelineCanada](https://github.com/ccodwg/CovidTimelineCanada) GitHub repository.
 
+For now, we used cumulative cases and deaths in each health region to evaluate the severity of the pandemic. We then intersected each Canadian community with the COVID-19 health regions to evaluate the severity of the pandemic to which each community was exposed to since the beginning of the outbreak. 
+
 ## Data transformation 
 
 All social vulnerabilities considered are relative and range from 0 to 1. A value of 0 means that a community is least vunerable, while a value of 1 means that a community is most vulnerable compared to other communities across the country. 
 
 # Exploration
 
-## Spatial distribution of cumulative vulnerabilities 
+## Spatial distribution
 
-![]("../figures/cumulative_exposure.png")
+### Cumulative vulnerabilities 
+
+Cumulative vulnerability is the sum of the 15 social vulnerabilities currently considered normalized between 0 and 1, used as a proxy of the relative intensity of each social vulnerability measurement.
+
+```{r cumvuln, fig.cap = "Cumulative vulnerabilities of Canadian communities, measured as a function of the relative intensity of 15 social vunlrability measurements.", out.width = '100%'}
+knitr::include_graphics("figures/cumulative_vulnerability.png")
+```
+
+### Cumulative COVID-19 cases 
+
+```{r cumcases, fig.cap = "Cumulative cases in Canadian communities. Cases were measured at the scale of health regions and extracted for each community based on which health region it is a part of. Cumulative cases are thus not representative of cumulative cases within a specific community, but rather of the health region to which they belong", out.width = '100%'}
+knitr::include_graphics("figures/cumulative_cases.png")
+```
+
+### Cumulative COVID-19 deaths
+
+```{r cumdeaths, fig.cap = "Cumulative deaths in Canadian communities. Cases were measured at the scale of health regions and extracted for each community based on which health region it is a part of. Cumulative deaths are thus not representative of cumulative deaths within a specific community, but rather of the health region to which they belong", out.width = '100%'}
+knitr::include_graphics("figures/cumulative_deaths.png")
+```
+
+## COVID-19 cases ~ social vulnerabilities
+
+```{r, results = "asis"}
+files <- dir("figures", pattern = "cases.png")
+files <- files[!files %in% c("cumulative_cases.png","cumul-cases.png")]
+files <- c(files, "cumul-cases.png")
+knitr::include_graphics(glue::glue("figures/{files}"))
+```
+
+## COVID-19 deaths ~ social vulnerabilities
+
+```{r, results = "asis"}
+files <- dir("figures", pattern = "deaths.png")
+files <- files[!files %in% c("cumulative_deaths.png","cumul-deaths.png")]
+files <- c(files, "cumul-deaths.png")
+knitr::include_graphics(glue::glue("figures/{files}"))
+```
 
 
 
+# Some points to consider
 
-
-
-
-
-
-## Some points to consider
-
-### Downscaling
+## Downscaling
 
 It might be interesting to downscale the analysis to Statistics Canada's census subdivision scale. An example of such an approach was used by @adegun2021 in Manitoba. Before I can do that, however, I would need to rework the health regions provided by the [covidtimelinecanada](https://github.com/ccodwg/CovidTimelineCanada) project, since they are not the same as the health regions from Statistics Canada. There is a short [description](https://github.com/ccodwg/CovidTimelineCanada/tree/main/geo) of the modifications made to the shapefiles in the covidtimelinecanada project, but essentially it boils down to Saskatchewan and British-Columbia having different covid reporting regions than the Statistics Canada health regions. Furthermore, the outline of health regions from the covid data is too simplified, I'm losing a lot of data along the coast. This means that I must either modify the polygons, or use an analysis to identify the closest polygons to each placenames rather than an intersect approach.
 
