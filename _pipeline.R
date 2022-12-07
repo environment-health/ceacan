@@ -8,9 +8,6 @@ pipeline <- function() {
   # Get area of interest 
   get_aoi()
   
-  # Make grid 
-  # pipedat::pipegrid(x = pipedat:::basemap$can, cellsize = 1, crs = 4326)
-
   # Integrate data 
   pipedat::pipeflow("./data/data-config/pipedat.yml")
   
@@ -19,6 +16,9 @@ pipeline <- function() {
   
   # Prepare data 
   data_prep()
+  
+  # Cluster analysis
+  make_cluster()
   
   # First figures
   scatter()
