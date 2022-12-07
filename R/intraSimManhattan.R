@@ -31,6 +31,10 @@ intraSim <- function(comm) {
   return(outlist)
 }
 
+#' Function to evaluate intra-similarity with bootstrap procedure
+#'
+#' @export
+
 bootIntraSim <- function(x, iter = 250, samp = .25, boot = 40000) {
   # If the dataset is too large, the analysis will be done through a bootstrap
   # List to store simper results for post-processing
