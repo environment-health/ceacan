@@ -65,12 +65,12 @@ make_cluster <- function() {
     wss <- function(x) (nrow(x)-1) * sum(apply(x,2,var))
 
     # Measure for each k and each cluster
-    wssMedoid <- wss(dr)
+    wssMedoid <- wss(dat)
     for(i in 1:length(kmedoid)) { # For each k value tested
       wssTemp <- numeric()
       for(j in 1:k[i]) { # For each cluster
         id <- kmedoid[[i]]$clustering == j # Identify observations in cluster j
-        wssTemp[j] <- wss(dr[id, ])
+        wssTemp[j] <- wss(dat[id, ])
       }
       wssMedoid[k[i]] <- sum(wssTemp)
     }
@@ -131,7 +131,7 @@ make_cluster <- function() {
   if (!exist) {
     # Number of clusters selected
     # WARNING: This is selected and adjusted manually
-    k <- 6
+    k <- 7
 
     # Object with only selected clustering results
     clMed <- kmedoid[[k-1]]$clustering
@@ -155,7 +155,7 @@ make_cluster <- function() {
     # Run iterative simper analysis
     iter <- 300
     prop <- .05
-    system.time(bootSimper <- bootstrapSimper(dr, clMed, iter = iter, prop = prop))
+    system.time(bootSimper <- bootstrapSimper(dat, clMed, iter = iter, prop = prop))
     save(bootSimper, file = here::here(out, 'bootSimper.RData'))
 
     # ~~~~~~~~~~~~~~~~~~~ SIMPER SUMMARY ~~~~~~~~~~~~~~~~~~~ #
@@ -173,8 +173,8 @@ make_cluster <- function() {
     # Empty arrays to store inter-cluster dissimilarity results
     for(i in 1:nList) {
       simperSummary[[i]] <- array(data = 0,
-                                  dim = c(ncol(dr), length(varNames), iter),
-                                  dimnames = list(drNames$accr, varNames))
+                                  dim = c(ncol(dat), length(varNames), iter),
+                                  dimnames = list(colnames(dat), varNames))
     }
 
     # Extract summary for simper analyses interations
@@ -211,7 +211,7 @@ make_cluster <- function() {
     for(i in 1:k) {
       cat("   k: ", i, "\r")
       id <- clMed == i
-      sim[[i]] <- bootIntraSim(dr[id, ], iter = 50, samp = .25)
+      sim[[i]] <- bootIntraSim(dat[id, ], iter = 50, samp = .25)
       save(sim, file = here::here(out, 'intraSimilarity.RData'))
     }
 
@@ -220,7 +220,7 @@ make_cluster <- function() {
     iter <- length(sim[[4]])
     varNames <- c('contr')
     simSummary <- vector('list', k)
-    for(i in 1:k) simSummary[[i]] <- array(data = 0, dim = c(ncol(dr), 1, iter), dimnames = list(drNames$accr, varNames))
+    for(i in 1:k) simSummary[[i]] <- array(data = 0, dim = c(ncol(dat), 1, iter), dimnames = list(colnames(dat), varNames))
 
     for(i in 1:k) {
       # Check if there are multiple iterations or not.
@@ -229,10 +229,10 @@ make_cluster <- function() {
       if(i %in% c(1,2,3)) {
         simSummary[[i]] <- matrix(ncol = 1,
                                   data = sim[[i]]$contr,
-                                  dimnames = list(drNames$accr, 'contr'))
+                                  dimnames = list(colnames(dat), 'contr'))
       } else {
         for(j in 1:iter) {
-          simSummary[[i]][,'contr',j] <- sim[[i]][[j]]$contr
+          simSummary[[i]][,'contr',j] <- sim[[i]][[j]]#$contr
         }
       }
     }
@@ -244,4 +244,268 @@ make_cluster <- function() {
     # Export
     save(similarityMean, file = here::here(out, 'similarityMean.RData'))
   }
+  
+  
+  # ~~~~~~~~~~~~~~~~~~~ Dissimilarity Contribution ~~~~~~~~~~~~~~~~~~~ #
+  exist <- file.exists(here::here("figures", 'interDissimilarity.jpg'))
+  if (!exist) {
+    # ~~~~~~~~~~~~~~~~~~~ EXTRA LIBRARIES ~~~~~~~~~~~~~~~~~~~ #
+    library(gridExtra)
+    library(ggplot2)
+    library(ggplotify)
+    library(grid)
+
+
+    # ~~~~~~~~~~~~~~~~~~~ DATA ~~~~~~~~~~~~~~~~~~~ #
+    load(here::here(out, 'k.RData'))
+    load(here::here(out, 'Clusters.RData'))
+    load(here::here(out, 'simperMean.RData'))
+
+    # ~~~~~~~~~~~~~~~~~~~ INDIVIDUAL CONTRIBUTION TO INTER-CLUSTER DISSIMILARITY ~~~~~~~~~~~~~~~~~~~ #
+    # Driver percent contribution to dissimilarity
+    contDiss <- lapply(simperMean, function(x) x[,'contr'] / sum(x[,'contr'], na.rm = TRUE)) |>
+                as.data.frame()
+    colnames(contDiss) <- names(simperMean)
+    contDiss[is.na(contDiss)] <- 0
+
+    # Total dissimilarity
+    totDiss <- unlist(lapply(simperMean, function(x) sum(x[, 'contr'], na.rm = TRUE)))
+
+    # Driver intensity in compared clusters
+    drInt1 <- lapply(simperMean, function(x) x[,'ava']) |>
+              as.data.frame()
+    drInt2 <- lapply(simperMean, function(x) x[,'avb']) |>
+              as.data.frame()
+
+    # Mean value in each cluster
+    totMean <- numeric(k)
+    for(i in 1:k) {
+      id <- clMed == i
+      totMean[i] <- mean(as.matrix(dat[id, ]), na.rm = TRUE)
+    }
+
+    # Set figure layout view
+    mat <- matrix(0,k,k)
+    mat[lower.tri(mat)] <- (max(mat)+1):(sum(lower.tri(mat)) + max(mat))
+    diag(mat) <- (max(mat)+1):(max(mat)+k)
+    mat <- t(mat)
+    mat[lower.tri(mat)] <- (max(mat)+1):length(mat)
+    mat <- t(mat)
+    mat <- rbind(mat, c(100,rep(max(mat)+1, 4),100))
+
+    # Circulat plots
+    p1 <- vector('list', ncol(contDiss))
+    for(i in 1:length(contDiss)) {
+      temp <- data.frame(individual = colnames(dat),
+                         group = 1:ncol(dat),
+                         value = round(contDiss[, i]*100))
+      rownames(temp) <- NULL
+      temp2 <- round(totDiss[i], 2)
+      p1[[i]] <- circularPlot(temp, temp2)
+    }
+
+    # # Individual clusters
+    # egsl <- st_centroid(egslGrid)
+    # p2 <- vector('list', k)
+    # for(i in 1:length(p2)) {
+    #   # Identify observations in cluster i
+    #   id <- clMed == i
+    # 
+    #   # Select only grid cells in cluster i
+    #   temp <- egsl |>
+    #           filter(clMed == i) |>
+    #           st_coordinates() |>
+    #           as.data.frame()
+    # 
+    #   ext <- st_bbox(egsl)
+    # 
+    #   p2[[i]] <- ggplot() +
+    #              geom_sf(data = egslSimple, fill = NA) +
+    #              geom_point(aes(x = X, y = Y), colour = '#187962', size = .01, data = temp) +
+    #              coord_sf(crs = st_crs(egslSimple), datum = NA) +
+    #              annotate("text",
+    #                       x = ext$xmin + diff(c(ext$xmin, ext$xmax))*.2,
+    #                       y = ext$ymax - diff(c(ext$ymin, ext$ymax))*.05,
+    #                       label = paste0('Cluster ', i),
+    #                       color="black",alpha=0.6, size=5) +
+    #              theme(
+    #                 panel.ontop = TRUE,   ## Note: this is to make the panel grid visible in this example
+    #                 panel.grid = element_blank(),
+    #                 line = element_blank(),
+    #                 rect = element_blank(),
+    #                 text = element_blank(),
+    #                 plot.background = element_rect(fill = "transparent"))
+    # }
+    
+    gg_color_hue <- function(n) {
+      hues = seq(15, 375, length = n + 1)
+      hcl(h = hues, l = 65, c = 100, alpha = .5)[1:n]
+    }
+    nGroup = 1
+    
+    # Driver intensity per cluster
+    p3 <- vector('list', ncol(drInt1))
+    for(i in 1:ncol(drInt1)) {
+      p3[[i]] <- as.ggplot(~butterfly(drInt1[, i], drInt2[, i]))
+    }
+
+    # Group legend
+    grLegend <-function() {
+      xDiff <- 1/nGroup
+      xGap <- .075
+      cols <- gg_color_hue(nGroup)[1:nGroup]
+      plot0(xlim = c(0,1), ylim = c(0,1))
+      for(i in 1:nGroup) {
+        x1 <- (i*xDiff) - xGap - xDiff/2
+        x2 <- (i*xDiff) + xGap - xDiff/2
+        y1 <- .25
+        y2 <- .75
+        polygon(x = c(x1, x2, x2, x1, x1),
+                y = c(y1, y1, y2, y2, y1),
+                col = cols[i],
+                border = '#000000')
+        text(x = (i*xDiff) - xDiff/2,
+             y = 0,
+             labels = "Nope",
+             # labels = grNames$name[i],
+             adj = c(.5,.5),
+             font = 2)
+      }
+    }
+
+    p4 <- list(as.ggplot(~grLegend()))
+
+    # List of all plots
+    # p <- c(p1,p2,p3,p4)
+    p <- c(p1,p3,p4)
+
+    # Full plot
+    jpeg('./figures/interDissimilarity.jpg', width = 2500, height = 2500, res = 200, pointsize = 7)
+    grid.arrange(grobs = p,
+                 layout_matrix = mat,
+                 heights = c(1,1,1,1,1,1,.5),
+                 right = textGrob('Driver intensity', gp=gpar(fontsize=20,fontface='bold'), rot = -90),
+                 left = textGrob('Cumulative dissimilarity contribution', gp=gpar(fontsize=20,fontface='bold'), rot = 90),
+                 padding = unit(2.5, "line"))
+    dev.off()  
+  }
+  
+  
+  # ~~~~~~~~~~~~~~~~~~~ Dissimilarity Contribution ~~~~~~~~~~~~~~~~~~~ #
+  exist <- file.exists(here::here("figures", 'intraSimilarity.jpg'))
+  if (!exist) {
+    # ~~~~~~~~~~~~~~~~~~~ EXTRA LIBRARIES ~~~~~~~~~~~~~~~~~~~ #
+    library(gridExtra)
+    library(ggplot2)
+    library(ggplotify)
+    library(grid)
+    library(graphicsutils)
+
+    gg_color_hue <- function(n) {
+      hues = seq(15, 375, length = n + 1)
+      hcl(h = hues, l = 65, c = 100, alpha = .5)[1:n]
+    }
+    nGroup = ncol(dat)
+
+
+    # ~~~~~~~~~~~~~~~~~~~ DATA ~~~~~~~~~~~~~~~~~~~ #
+    load(here::here(out, 'k.RData'))
+    load(here::here(out, 'Clusters.RData'))
+    load(here::here(out, 'similarityMean.RData'))
+
+    # ~~~~~~~~~~~~~~~~~~~ SIMILARITY CONTRIBUTION ~~~~~~~~~~~~~~~~~~~ #
+    # Driver percent contribution to dissimilarity
+    contSim <- lapply(similarityMean, function(x) x[,'contr'] / sum(x[,'contr'], na.rm = TRUE)) |>
+                as.data.frame()
+    colnames(contSim) <- names(similarityMean)
+
+    # Total similarity
+    totSim <- lapply(similarityMean, function(x) sum(x[,'contr'], na.rm = TRUE)) |>
+              as.data.frame()
+
+    # Circulat plots
+    p1 <- vector('list', ncol(contSim))
+    for(i in 1:length(contSim)) {
+      temp <- data.frame(individual = colnames(dat),
+                         group = 1:ncol(dat),
+                         value = round(contSim[, i]*100))
+      rownames(temp) <- NULL
+      temp2 <- round(totSim[i],2)
+      p1[[i]] <- circularPlot(temp, temp2)
+    }
+
+    # # Individual clusters
+    # egsl <- st_centroid(egslGrid)
+    # p2 <- vector('list', k)
+    # for(i in 1:length(p2)) {
+    #   # Identify observations in cluster i
+    #   id <- clMed == i
+    # 
+    #   # Select only grid cells in cluster i
+    #   temp <- egsl |>
+    #           filter(clMed == i) |>
+    #           st_coordinates() |>
+    #           as.data.frame()
+    #           ext <- st_bbox(egsl)
+    # 
+    #   p2[[i]] <- ggplot() +
+    #              geom_sf(data = egslSimple, fill = NA) +
+    #              geom_point(aes(x = X, y = Y), colour = '#187962', size = .01, data = temp) +
+    #              coord_sf(crs = st_crs(egslSimple), datum = NA) +
+    #              annotate("text",
+    #                       x = ext$xmin + diff(c(ext$xmin, ext$xmax))*.2,
+    #                       y = ext$ymax - diff(c(ext$ymin, ext$ymax))*.05,
+    #                       label = paste0('Cluster ', i),
+    #                       color="black",alpha=0.6, size=5) +
+    #              theme(
+    #                 panel.ontop = TRUE,   ## Note: this is to make the panel grid visible in this example
+    #                 panel.grid = element_blank(),
+    #                 line = element_blank(),
+    #                 rect = element_blank(),
+    #                 text = element_blank(),
+    #                 plot.background = element_rect(fill = "transparent"))
+    # }
+
+    # # Group legend
+    # grLegend <-function() {
+    #   xDiff <- 1/nGroup
+    #   xGap <- .075
+    #   cols <- gg_color_hue(nGroup)[1:nGroup]
+    #   plot0(xlim = c(0,1), ylim = c(0,1))
+    #   for(i in 1:nGroup) {
+    #     x1 <- (i*xDiff) - xGap - xDiff/2
+    #     x2 <- (i*xDiff) + xGap - xDiff/2
+    #     y1 <- .25
+    #     y2 <- .75
+    #     polygon(x = c(x1, x2, x2, x1, x1),
+    #             y = c(y1, y1, y2, y2, y1),
+    #             col = cols[i],
+    #             border = '#000000')
+    #     text(x = (i*xDiff) - xDiff/2,
+    #          y = 0,
+    #          labels = grNames$name[i],
+    #          adj = c(.5,.5),
+    #          font = 2)
+    #   }
+    # }
+
+    # p3 <- list(as.ggplot(~grLegend()))
+
+
+    # Layout view
+    # mat <- matrix(nrow = 4, data = c(1,3,5,NA,8,10,12,7,2,4,6,14,9,11,13,NA))
+    mat <- matrix(nrow = 4, data = c(1,3,5,NA,7,9,11,13,2,4,6,13,8,10,12,NA))
+
+    # Figure
+    # p <- c(p2,p1,p3)
+    p <- c(p1)
+    jpeg('./figures/intraSimilarity.jpg', width = 2000, height = 2000, res = 200, pointsize = 7)
+    grid.arrange(grobs = p,
+                 layout_matrix = mat,
+                 heights = c(1,1,1,.25),
+                 top = textGrob('Intra-cluster similarity', gp=gpar(fontsize=20,fontface='bold')),
+                 padding = unit(2.5, "line"))
+    dev.off()
+  }  
 }
+
