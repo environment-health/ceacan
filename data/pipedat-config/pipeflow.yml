@@ -9,7 +9,7 @@ pipedat:
     keep_raw: FALSE
   # ==========================================================================
   # UID of pipelines to eexecute
-  data_pipelines:
+  pipelines:
     - "a56e753b" # Covid Timeline Canada
     - "8b0bbc44" # Open Database of Healthcare Facilities
     - "852db1a3" # Census 2021 housing suitability
