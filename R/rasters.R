@@ -1,9 +1,9 @@
 #' Script to prepare the data for analysis
 #'
 #' @export
-scatter <- function() {
+make_rasters <- function() {
   if(!file.exists("figures")) dir.create("figures")
-  ex <- sf::st_read(here::here("data","data-format","exposure.gpkg"))
+  ex <- sf::st_read(here::here("data","data-format","exposure2.gpkg"))
   ex$cases <- ex$cases / ex$pop
   ex$deaths <- ex$deaths / ex$pop
   colnm <- c(
@@ -20,18 +20,38 @@ scatter <- function() {
     "critical_healthcare",
     "longterm_healthcare"
   )
-  for(i in colnm) {
-    ex[,i] <- log(ex[,i, drop = TRUE] + 1)
-    ex[,i] <- ex[,i,drop = TRUE] / max(ex[,i,drop = TRUE], na.rm = TRUE)
-  }
-    
-    
+        
   ex$cumul <- rowSums(ex[,colnm, drop = TRUE], na.rm = TRUE)
   colnm <- c(colnm, "cumul")
+  ex <- ex[,colnm]
+  
   
   # Canada outline
   can <- pipedat:::basemap$can |>
          sf::st_make_valid()
+
+  # Grid 
+  grd <- stars::read_stars("data/grid/grid.tif")
+  grd <- stars::read_stars("data/data-grid/grid_raster.tif")
+
+  # Rasters
+  dat <- stars::st_rasterize(ex, grd)
+  dat <- dat[can]
+
+  # Figures 
+  out <- here::here("figures","rasters")
+  if(!file.exists(out)) dir.create(out, recursive = TRUE)         
+  nm <- here::here(out,names(dat))
+  
+  for(i in 1:length(nm)) {
+    png(glue::glue("{nm[i]}.png"), res = 400, width = 200, height = 200, units = "mm", pointsize = 24)
+    par(mar = c(0,0,0,0))
+    image(dat[i], col = viridis::viridis(100))
+    plot(sf::st_geometry(can), add = TRUE, border = "#000000AA")
+    dev.off()    
+  }
+
+
 
   # =============================================================================================
   # Spatial figures

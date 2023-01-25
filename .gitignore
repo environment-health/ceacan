@@ -43,3 +43,4 @@ vignettes/*.pdf
 .DS_Store
 raw/
 *.RData
+*.gpkg

@@ -8,6 +8,10 @@ pipeline <- function() {
   # Get area of interest 
   get_aoi()
   
+  # Make grid 
+  aoi <- sf::st_read("data/data-basemap/aoi.geojson")
+  pipedat::pipegrid(aoi, cellsize = 0.01)
+  
   # Integrate data 
   pipedat::pipeflow("./data/data-config/pipedat.yml")
   

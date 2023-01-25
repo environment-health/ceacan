@@ -38,6 +38,18 @@ data_prep <- function() {
   unique()
   placenames <- dplyr::bind_rows(placenames[-uid, ], fn, ic)
   
+  # Alternate plan 
+  can <- pipedat:::basemap$can |>
+         sf::st_make_valid()
+
+  placenames <- stars::read_stars("data/grid/grid.tif") |>
+                as.data.frame() |>
+                dplyr::select(x,y) |>
+                sf::st_as_sf(coords = c("x","y"), crs = 4326) |>
+                dplyr::mutate(uid = 1:dplyr::n())
+  
+  placenames2 <- placenames[can]
+  
   ## Covid data
   covid <- importdat("a56e753b")
   hr <- covid[["covid_timeline_canada-a56e753b-health_regions_wgs84.geojson"]]
@@ -197,6 +209,13 @@ data_prep <- function() {
   ### Waste treatment and disposal vs Water and Wastewater Systems
   wtd <- dplyr::filter(npri, SectorDescriptionEn == "Waste Treatment and Disposal")
   wws <- dplyr::filter(npri, SectorDescriptionEn == "Water and Wastewater Systems")
+  
+  ### Health care facilities 
+  health <- importdat("8b0bbc44")[[2]]
+  type <- read.csv("data/data-raw/open_database_healthcare_facilities-8b0bbc44/classes.csv")
+  health <- dplyr::left_join(health, type, by = "source_facility_type")
+  critical <- health[health$type %in% "critical",]
+  longterm <- health[health$type %in% c("long-term","diagnostics","cnbnl"),]
   # ------------------------------------------------------------------------------------------------
   
   
@@ -256,11 +275,12 @@ data_prep <- function() {
   # ================================================================================================
   # Calculate distances 
   # WARNING: max_dist is completely arbitrary
-  dist_calc <- function(pts, max_dist = 250) {
+  dist_calc <- function(pts, max_dist = 25) {
     dat <- sf::st_distance(placenames, pts) |>
            units::set_units("km") |>
            apply(MARGIN = 1, FUN = min)
     # Cap to max dist
+    max_dist <- max(dat, na.rm = TRUE)
     dat <- ifelse(dat > max_dist, max_dist, dat) 
     
     # Transform as an index between 0 and 1, with 1 being the farthest, and 0 the closest
@@ -270,12 +290,38 @@ data_prep <- function() {
   ## Waste treatment and disposal vs Water and Wastewater Systems
   placenames$waste_treatment_disposal <- dist_calc(wtd)
   placenames$water_waster_systems <- dist_calc(wws)
+  
+  # Health care 
+  placenames$critical_healthcare <- dist_calc(critical)
+  placenames$longterm_healthcare <- dist_calc(longterm)
+  # ------------------------------------------------------------------------------------------------
+  
+  
+  
+  # ================================================================================================
+  ## Latitude 
+  coord <- sf::st_coordinates(placenames)
+  x <- coord[,"Y"] |> unname()
+  x <- x-min(x)
+  x <- x/max(x)
+  placenames$latitude <- x
+  
+  ## Select variables of interest 
+  placenames <- dplyr::select(
+    placenames, 
+    -pharma_prox,
+    -health_prox,
+    -grocery_prox,
+    -library_prox,
+    -transit_prox,
+    -park_prox
+  )  
   # ------------------------------------------------------------------------------------------------
   
   # ================================================================================================
   # Export data 
   output <- here::here("data","data-format")
   if (!file.exists(output)) dir.create(output)
-  sf::st_write(placenames, here::here(output,"exposure.geojson"), delete_dsn = TRUE)
+  sf::st_write(placenames, here::here(output,"exposure2.gpkg"), delete_dsn = TRUE)
   # ------------------------------------------------------------------------------------------------
 }

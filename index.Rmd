@@ -67,20 +67,17 @@ The [Inuit Communities location](https://open.canada.ca/data/en/dataset/2bcf34b5
 So far, we characterized social vulnerabilities using three main sources of data to obtain the following list: 
 
 - Proximity to employment
-- Proximity to grocery stores
-- Proximity to pharmacies
-- Proximity to health care
 - Proximity to child care
 - Proximity to primary education
 - Proximity to secondary education
-- Proximity to public transit
-- Proximity to neighborhood parks
-- Proximity to libraries
 - Dwelling condition
 - Housing suitability
 - Acceptable housing
 - Proximity to waste treatment and disposal facilities
 - Proximity to water and wastewater systems
+- Proximity to longterm care facilities
+- Proximity to critical care facilities
+- latitude 
 
 Below is a brief description of the data and how the were processes.
 
