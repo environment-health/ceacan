@@ -1,5 +1,6 @@
 library(devtools)
 load_all()
+library(covidfn)
 
 pipeline <- function() {
   # Update global parameters
@@ -8,12 +9,8 @@ pipeline <- function() {
   # Get area of interest 
   get_aoi()
   
-  # Make grid 
-  aoi <- sf::st_read("data/data-basemap/aoi.geojson")
-  pipedat::pipegrid(aoi, cellsize = 0.01)
-  
   # Integrate data 
-  pipedat::pipeflow("./data/data-config/pipedat.yml")
+  pipeflow("./data/data-config/pipedat.yml")
   
   # Single bibtex file 
   getBib()

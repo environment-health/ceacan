@@ -3,19 +3,16 @@
 #' @export
 get_aoi <- function() {
   # Load federal bioregions
-  dat <- pipedat:::basemap$can |>
+  dat <- pipedatfn:::basemap$can |>
          sf::st_make_valid()
 
   # Export data
-  if (!file.exists("data/data-basemap/")) dir.create("data/data-basemap/")
+  out <- here::here("data","aoi")
+  chk_create(out)
   sf::st_write(
     obj = dat,
-    dsn = "./data/data-basemap/aoi.geojson",
+    dsn = here::here(out, "aoi.gpkg"),
     delete_dsn = TRUE,
     quiet = TRUE
   )
-
-  # Export for lazy load
-  aoi <- dat
-  save(aoi, file = './data/aoi.RData')
 }
