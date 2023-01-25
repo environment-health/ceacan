@@ -1,17 +1,14 @@
 library(devtools)
 load_all()
-library(covidfn)
+library(pipefn)
 
 pipeline <- function() {
-  # Update global parameters
-  global_param()
-  
   # Get area of interest 
   get_aoi()
   
   # Integrate data 
-  pipeflow("./data/data-config/pipedat.yml")
-  
+  pipeflow("./data/pipedat-config/pipeflow.yml")
+
   # Single bibtex file 
   getBib()
   

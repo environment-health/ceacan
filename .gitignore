@@ -44,3 +44,4 @@ vignettes/*.pdf
 raw/
 *.RData
 *.gpkg
+*.tar.xz
