@@ -2,10 +2,12 @@
 
 export(bootIntraSim)
 export(bootstrapSimper)
+export(butterfly)
+export(circularPlot)
 export(data_prep)
-export(getBib)
 export(get_aoi)
 export(intraSim)
 export(make_cluster)
+export(make_rasters)
 export(scatter)
 export(simperMan)
