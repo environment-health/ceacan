@@ -19,8 +19,5 @@ pipeline <- function() {
   scatter()
   
   # Report 
-  suppressWarnings(bookdown::render_book("index.Rmd", "bookdown::gitbook"))
-  
-  # Remove figures from folders
-  unlink("figures", recursive = TRUE)
+  render_report()
 }

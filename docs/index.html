@@ -23,7 +23,7 @@
 <meta name="author" content="David Beauchesne" />
 
 
-<meta name="date" content="2022-12-16" />
+<meta name="date" content="2023-03-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -79,6 +79,7 @@ div.csl-indent {
 }
 </style>
 
+<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 
 <body>
@@ -91,6 +92,9 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
+<li><a href="./">Covid FN</a></li>
+
+<li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Project description<span></span></a></li>
 <li class="chapter" data-level="2" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>2</b> Methods<span></span></a>
 <ul>
@@ -102,21 +106,13 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="methods.html"><a href="methods.html#data-transformation"><i class="fa fa-check"></i><b>2.2</b> Data transformation<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>3</b> Exploration<span></span></a>
+<li class="chapter" data-level="3" data-path="some-points-to-consider.html"><a href="some-points-to-consider.html"><i class="fa fa-check"></i><b>3</b> Some points to consider<span></span></a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="exploration.html"><a href="exploration.html#spatial-distribution"><i class="fa fa-check"></i><b>3.1</b> Spatial distribution<span></span></a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="exploration.html"><a href="exploration.html#cumulative-vulnerabilities"><i class="fa fa-check"></i><b>3.1.1</b> Cumulative vulnerabilities<span></span></a></li>
-<li class="chapter" data-level="3.1.2" data-path="exploration.html"><a href="exploration.html#cumulative-covid-19-cases"><i class="fa fa-check"></i><b>3.1.2</b> Cumulative COVID-19 cases<span></span></a></li>
-<li class="chapter" data-level="3.1.3" data-path="exploration.html"><a href="exploration.html#cumulative-covid-19-deaths"><i class="fa fa-check"></i><b>3.1.3</b> Cumulative COVID-19 deaths<span></span></a></li>
+<li class="chapter" data-level="3.1" data-path="some-points-to-consider.html"><a href="some-points-to-consider.html#downscaling"><i class="fa fa-check"></i><b>3.1</b> Downscaling<span></span></a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="exploration.html"><a href="exploration.html#covid-19-cases-social-vulnerabilities"><i class="fa fa-check"></i><b>3.2</b> COVID-19 cases ~ social vulnerabilities<span></span></a></li>
-<li class="chapter" data-level="3.3" data-path="exploration.html"><a href="exploration.html#covid-19-deaths-social-vulnerabilities"><i class="fa fa-check"></i><b>3.3</b> COVID-19 deaths ~ social vulnerabilities<span></span></a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="some-points-to-consider.html"><a href="some-points-to-consider.html"><i class="fa fa-check"></i><b>4</b> Some points to consider<span></span></a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="some-points-to-consider.html"><a href="some-points-to-consider.html#downscaling"><i class="fa fa-check"></i><b>4.1</b> Downscaling<span></span></a></li>
-</ul></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="_blank">Published with bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -137,7 +133,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">covidfn</h1>
 <p class="author"><em>David Beauchesne</em></p>
-<p class="date"><em>2022-12-16</em></p>
+<p class="date"><em>2023-03-08</em></p>
 </div>
 <div id="project-description" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> Project description<a href="index.html#project-description" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -165,8 +161,8 @@ div.csl-indent {
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
-"facebook": true,
+"github": true,
+"facebook": false,
 "twitter": true,
 "linkedin": false,
 "weibo": false,
@@ -181,8 +177,8 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": null,
-"text": null
+"link": "https://github.com/rstudio/bookdown/edit/master/inst/examples/index.Rmd",
+"text": "Edit"
 },
 "history": {
 "link": null,
@@ -192,13 +188,13 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["bookdown.pdf", "bookdown.epub", "bookdown.mobi"],
 "search": {
 "engine": "fuse",
 "options": null
 },
 "toc": {
-"collapse": "subsection"
+"collapse": false
 }
 });
 });

@@ -123,49 +123,6 @@ For now, we used cumulative cases and deaths in each health region to evaluate t
 
 All social vulnerabilities considered are relative and range from 0 to 1. A value of 0 means that a community is least vunerable, while a value of 1 means that a community is most vulnerable compared to other communities across the country. 
 
-# Exploration
-
-## Spatial distribution
-
-### Cumulative vulnerabilities 
-
-Cumulative vulnerability is the sum of the 15 social vulnerabilities currently considered normalized between 0 and 1, used as a proxy of the relative intensity of each social vulnerability measurement.
-
-```{r cumvuln, fig.cap = "Cumulative vulnerabilities of Canadian communities, measured as a function of the relative intensity of 15 social vunlrability measurements.", out.width = '100%'}
-knitr::include_graphics("figures/cumulative_vulnerability.png")
-```
-
-### Cumulative COVID-19 cases 
-
-```{r cumcases, fig.cap = "Cumulative cases in Canadian communities. Cases were measured at the scale of health regions and extracted for each community based on which health region it is a part of. Cumulative cases are thus not representative of cumulative cases within a specific community, but rather of the health region to which they belong", out.width = '100%'}
-knitr::include_graphics("figures/cumulative_cases.png")
-```
-
-### Cumulative COVID-19 deaths
-
-```{r cumdeaths, fig.cap = "Cumulative deaths in Canadian communities. Cases were measured at the scale of health regions and extracted for each community based on which health region it is a part of. Cumulative deaths are thus not representative of cumulative deaths within a specific community, but rather of the health region to which they belong", out.width = '100%'}
-knitr::include_graphics("figures/cumulative_deaths.png")
-```
-
-## COVID-19 cases ~ social vulnerabilities
-
-```{r, results = "asis"}
-files <- dir("figures", pattern = "cases.png")
-files <- files[!files %in% c("cumulative_cases.png","cumul-cases.png")]
-files <- c(files, "cumul-cases.png")
-knitr::include_graphics(glue::glue("figures/{files}"))
-```
-
-## COVID-19 deaths ~ social vulnerabilities
-
-```{r, results = "asis"}
-files <- dir("figures", pattern = "deaths.png")
-files <- files[!files %in% c("cumulative_deaths.png","cumul-deaths.png")]
-files <- c(files, "cumul-deaths.png")
-knitr::include_graphics(glue::glue("figures/{files}"))
-```
-
-
 
 # Some points to consider
 

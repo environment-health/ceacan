@@ -1,7 +1,8 @@
 book_filename: bookdown
-repo: https://github.com/david-beauchesne/rapport
+repo: https://github.com/Environment-Health/covidfn
 output_dir: docs
-rmd_files: ["index.Rmd"]
+rmd_subdir:
+  - "content"
 clean: [packages.bib, bookdown.bbl]
 delete_merged_file: true
 language:

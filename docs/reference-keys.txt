@@ -1,6 +1,3 @@
-fig:cumvuln
-fig:cumcases
-fig:cumdeaths
 project-description
 methods
 data
@@ -14,12 +11,5 @@ housing-statistics
 water-and-wastewater-systems
 covid-19-data
 data-transformation
-exploration
-spatial-distribution
-cumulative-vulnerabilities
-cumulative-covid-19-cases
-cumulative-covid-19-deaths
-covid-19-cases-social-vulnerabilities
-covid-19-deaths-social-vulnerabilities
 some-points-to-consider
 downscaling
