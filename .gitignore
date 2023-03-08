@@ -38,6 +38,8 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 *.csv
+!contacts.csv
+!metadata.csv
 *.geojson
 *.tif
 .DS_Store

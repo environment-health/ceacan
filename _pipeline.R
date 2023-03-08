@@ -6,12 +6,9 @@ pipeline <- function() {
   # Get area of interest 
   get_aoi()
   
-  # Integrate data 
-  pipeflow("./data/pipedat-config/pipeflow.yml")
-
-  # Single bibtex file 
-  getBib()
-  
+  # Get and format data
+  pipeflow()
+    
   # Prepare data 
   data_prep()
   
