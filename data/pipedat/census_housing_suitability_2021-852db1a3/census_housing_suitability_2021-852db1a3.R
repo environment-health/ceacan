@@ -14,7 +14,7 @@
 #' \dontrun{
 #' dp_852db1a3()
 #' }
-dp_852db1a3 <- function(bbox = NULL, bbox_crs = NULL, timespan = NULL, grd = here::here("data","grid","grid.tif"), integrate = TRUE, keep_raw = TRUE, ...) {
+dp_852db1a3 <- function(bbox = NULL, bbox_crs = NULL, timespan = NULL, ingrid = TRUE, keep_raw = TRUE, ...) {
   uid <- "852db1a3"
   nm <- glue::glue("{get_shortname(uid)}-{uid}")
   path <- make_path(uid)

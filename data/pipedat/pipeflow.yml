@@ -16,6 +16,8 @@ pipedat:
     - "b48b01d6" # Census 2021 dwelling condition
     - "f4abec86" # Census 2021 acceptable housing
     - "5e4be996" # Census cartographic subdivision boundary files 2021
+    - "288ca300" # Census cartographic division boundary files 2021
+    - "175ec912" # Acceptable housing in Canada
   # ==========================================================================
   # Additional parameters parsed to pipelines 
   params:

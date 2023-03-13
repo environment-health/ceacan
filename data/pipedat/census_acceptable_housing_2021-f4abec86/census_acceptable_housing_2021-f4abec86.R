@@ -14,7 +14,7 @@
 #' \dontrun{
 #' dp_f4abec86()
 #' }
-dp_f4abec86 <- function(bbox = NULL, bbox_crs = NULL, timespan = NULL, grd = here::here("data","grid","grid.tif"), integrate = TRUE, keep_raw = TRUE, ...) {
+dp_f4abec86 <- function(bbox = NULL, bbox_crs = NULL, timespan = NULL, ingrid = TRUE, keep_raw = TRUE, ...) {
   uid <- "f4abec86"
   nm <- glue::glue("{get_shortname(uid)}-{uid}")
   path <- make_path(uid)
@@ -33,11 +33,11 @@ dp_f4abec86 <- function(bbox = NULL, bbox_crs = NULL, timespan = NULL, grd = her
   # Format data 
   # =~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~=~-~= #
   if (check_format(uid)) {
-    dat <- masterload(here::here(path,"raw","98100246.csv"))
-
-    # Export
-    fm <- here::here(path,"format",glue::glue("{nm}"))
-    masterwrite(dat, fm)    
+    # Nothing to format, simply rename & copy file 
+    file.copy(
+      from = here::here(path,"raw","98100246.csv"), 
+      to = here::here(path,"format",glue::glue("{nm}.csv"))
+    )
   } 
   # _________________________________________________________________________________________ #
 
