@@ -18,6 +18,9 @@ pipedat:
     - "5e4be996" # Census cartographic subdivision boundary files 2021
     - "288ca300" # Census cartographic division boundary files 2021
     - "175ec912" # Acceptable housing in Canada
+    - "37563350" # Census Profile, 2021 Census of Population
+    - "8671c3e4" # Canadian social vulnerabilities using the 2021 Census of Poulation
   # ==========================================================================
   # Additional parameters parsed to pipelines 
   params:
+    - census_geo_8671c3e4: "division"
