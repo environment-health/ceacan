@@ -20,6 +20,7 @@ pipedat:
     - "175ec912" # Acceptable housing in Canada
     - "37563350" # Census Profile, 2021 Census of Population
     - "8671c3e4" # Canadian social vulnerabilities using the 2021 Census of Poulation
+    - "7daa23ee" # Census 2021 road network file
   # ==========================================================================
   # Additional parameters parsed to pipelines 
   params:
