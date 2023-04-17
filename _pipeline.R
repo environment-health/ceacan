@@ -1,20 +1,14 @@
 library(devtools)
 load_all()
-library(covidfn)
+library(pipefn)
 
 pipeline <- function() {
-  # Update global parameters
-  global_param()
-  
   # Get area of interest 
   get_aoi()
   
-  # Integrate data 
-  pipeflow("./data/data-config/pipedat.yml")
-  
-  # Single bibtex file 
-  getBib()
-  
+  # Get and format data
+  pipeflow()
+    
   # Prepare data 
   data_prep()
   
@@ -25,8 +19,5 @@ pipeline <- function() {
   scatter()
   
   # Report 
-  suppressWarnings(bookdown::render_book("index.Rmd", "bookdown::gitbook"))
-  
-  # Remove figures from folders
-  unlink("figures", recursive = TRUE)
+  render_report()
 }

@@ -1,0 +1,27 @@
+pipedat:
+  parameters:
+    make_grid: TRUE
+    crs: 4326
+    cellsize: 0.1
+    aoi: data/aoi/aoi.gpkg
+    grd: data/grid/grid.tif
+    integrate: TRUE
+    keep_raw: FALSE
+  # ==========================================================================
+  # UID of pipelines to execute
+  pipelines:
+    - "a56e753b" # Covid Timeline Canada
+    - "8b0bbc44" # Open Database of Healthcare Facilities
+    - "852db1a3" # Census 2021 housing suitability
+    - "b48b01d6" # Census 2021 dwelling condition
+    - "f4abec86" # Census 2021 acceptable housing
+    - "5e4be996" # Census cartographic subdivision boundary files 2021
+    - "288ca300" # Census cartographic division boundary files 2021
+    - "175ec912" # Acceptable housing in Canada
+    - "37563350" # Census Profile, 2021 Census of Population
+    - "8671c3e4" # Canadian social vulnerabilities using the 2021 Census of Poulation
+    - "7daa23ee" # Census 2021 road network file
+  # ==========================================================================
+  # Additional parameters parsed to pipelines 
+  params:
+    - census_geo_8671c3e4: "division"

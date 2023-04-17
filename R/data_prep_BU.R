@@ -50,6 +50,26 @@ data_prep <- function() {
   
   placenames2 <- placenames[can]
   
+  ## Covid data
+  covid <- importdat("a56e753b")
+  hr <- covid[["covid_timeline_canada-a56e753b-health_regions_wgs84.geojson"]]
+  hrpop <- covid[["covid_timeline_canada-a56e753b-health_regions.csv"]] |>
+           dplyr::select(hruid, pop) |>
+           dplyr::mutate(hruid = as.character(hruid))
+           
+  ### NOTE: First go at cases and deaths, just take the cumulative total 
+  cases <- covid[["covid_timeline_canada-a56e753b-CovidTimelineCanada_hr.csv"]] |>
+           dplyr::group_by(name, sub_region_1) |>
+           dplyr::summarize(value = max(value)) |>
+           dplyr::ungroup()
+  uid <- cases$name == "cases"
+  deaths <- cases[!uid, ] |>
+            dplyr::select(hruid = sub_region_1, deaths = value) |>
+            dplyr::mutate(hruid = as.character(hruid))
+  cases <- cases[uid, ] |>
+           dplyr::select(hruid = sub_region_1, cases = value) |>
+           dplyr::mutate(hruid = as.character(hruid))
+  
   ## Proximity measures data 
   px <- importdat("ee7295d7")
   px <- px[["proximity_measures_database-ee7295d7-polygons.geojson"]] |>
@@ -62,7 +82,117 @@ data_prep <- function() {
           -transit_exists
         )
         
+  ## Statistics Canada census subdivisions
+  sc2021 <- importdat("5e4be996")[[1]]
 
+  ## Census 2021 housing suitability
+  hs <- importdat("852db1a3")[[1]] 
+  hs <- dplyr::filter(
+    hs,
+    Housing.suitability..3. != "Total - Housing suitability" &
+    Number.of.persons.per.room..3. == "Total - Number of persons per room" &
+    Statistics..3C. == "Number of private households" &
+    Tenure..4. == "Total - Tenure" &
+    Number.of.rooms.and.number.of.bedrooms..12. == "Total - Number of rooms and number of bedrooms"
+  ) |>
+  dplyr::select(
+    DGUID,
+    housing_suitability = Housing.suitability..3.,
+    household_size = Household.size..8..Total...Household.size.1.,
+    average_household_size = Household.size..8..Average.household.size.8.
+  ) |>
+  tidyr::pivot_wider (
+    id_cols = DGUID,
+    names_from = housing_suitability,
+    values_from = c(household_size, average_household_size)
+  ) |>
+  dplyr::rename(
+    household_size_suitable = household_size_Suitable,
+    household_size_not_suitable = "household_size_Not suitable",
+    average_household_size_suitable = average_household_size_Suitable,
+    average_household_size_not_suitable = "average_household_size_Not suitable"
+  ) |>
+  dplyr::mutate(
+    percent_household_not_suitable = 
+      household_size_not_suitable / 
+      (household_size_suitable + household_size_not_suitable),
+    household_not_suitable = percent_household_not_suitable / 
+                             max(percent_household_not_suitable, na.rm = TRUE)
+  ) |>
+  dplyr::select(
+    DGUID, 
+    household_not_suitable
+  )
+
+  ## Census 2021 dwelling condition
+  dc <- importdat("b48b01d6")[[1]]
+  dc <- dplyr::filter(
+    dc,
+    Period.of.construction..13. == "Total - Period of construction" &
+    Structural.type.of.dwelling..10. == "Total - Structural type of dwelling" &
+    Statistics..3C. == "Number of private households" &
+    Dwelling.condition..4. != "Total - Dwelling condition"    
+  ) |>
+  dplyr::select(
+    DGUID,
+    dwelling_condition = Dwelling.condition..4.,
+    tenure = Tenure..4..Total...Tenure.1.
+  ) |>
+  tidyr::pivot_wider(
+    id_cols = DGUID,
+    names_from = dwelling_condition,
+    values_from = tenure
+  ) |>
+  dplyr::rename(
+    regular_maintenance_needed = "Regular maintenance needed",
+    minor_repairs_needed = "Minor repairs are needed",
+    major_repairs_needed = "Major repairs needed"
+  ) |>
+  dplyr::mutate(
+    percent_major_repairs_needed = 
+      major_repairs_needed / 
+      (regular_maintenance_needed + minor_repairs_needed + major_repairs_needed),
+    major_repairs_needed = percent_major_repairs_needed / max(percent_major_repairs_needed, na.rm = TRUE)
+  ) |>
+  dplyr::select(
+    DGUID, 
+    major_repairs_needed
+  )
+
+  
+  ## Census 2021 acceptable housing
+  ah <- importdat("f4abec86")[[1]]
+  ah <- dplyr::filter(
+    ah,
+    Residence.on.or.off.reserve..3. == "Total - Residence on or off reserve" &
+    Core.housing.need..5. == "Total - Core housing need" &
+    Household.type.including.census.family.structure..16. == 
+      "Total - Household type including census family structure" &
+    Statistics..3C. == "Number of private households" &
+    Acceptable.housing..9. != "Total - Acceptable housing"
+  ) |>
+  dplyr::select(
+    DGUID,
+    acceptable_housing = Acceptable.housing..9.,
+    tenure = Tenure..4..Total...Tenure.1.
+  ) |>
+  dplyr::mutate(
+    acceptable_housing = tolower(stringr::str_replace(acceptable_housing," ","_"))
+  ) |>
+  tidyr::pivot_wider(
+    id_cols = DGUID,
+    names_from = acceptable_housing,
+    values_from = tenure
+  ) 
+  uid <- stringr::str_detect(colnames(ah), "below")
+  ah$below_thresholds <- rowSums(ah[, uid])
+  ah$percent_below_thresholds <- ah$below_thresholds / (ah$below_thresholds + ah$acceptable)
+  ah$below_thresholds <- ah$percent_below_thresholds / max(ah$percent_below_thresholds, na.rm = TRUE)
+  ah <- dplyr::select(
+    ah,
+    DGUID,
+    below_thresholds
+  ) 
 
   ## National Pollutant Release Inventory
   npri <- importdat("d2f44fdf")[[1]] 

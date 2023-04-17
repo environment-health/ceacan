@@ -3,7 +3,7 @@
 #' @export
 get_aoi <- function() {
   # Load federal bioregions
-  dat <- pipedatfn:::basemap$can |>
+  dat <- pipefn:::basemap$can |>
          sf::st_make_valid()
 
   # Export data
