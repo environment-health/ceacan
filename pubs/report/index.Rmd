@@ -1,10 +1,10 @@
 ---
-title: covidfn
+title: ceacan
 author: "David Beauchesne"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 documentclass: scrbook
-bibliography: [covidfn.bib]
+bibliography: [ceacan.bib]
 # biblio-style: apalike
 csl: frontiers.csl
 link-citations: yes

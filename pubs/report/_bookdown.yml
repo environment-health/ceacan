@@ -1,5 +1,5 @@
 book_filename: bookdown
-repo: https://github.com/Environment-Health/covidfn
+repo: https://github.com/Environment-Health/ceacan
 output_dir: docs
 rmd_subdir:
   - "content"
