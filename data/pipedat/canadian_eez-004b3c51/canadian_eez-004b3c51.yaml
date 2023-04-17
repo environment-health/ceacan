@@ -1,0 +1,31 @@
+pipeline:
+  pipeline_id: 004b3c51
+  pipeline_type: data
+  creators:
+  - contact_id: 1
+    first_name: David
+    last_name: Beauchesne
+    organization: Universite Laval
+    department: Department of Biology
+    role: Postdoctoral researcher
+    email: david.beauchesne@hotmail.com
+    phone: 1-514-553-4974
+  date_created: '2022-09-22'
+  url: https://github.com/Ecosystem-Health/pipedat/blob/main/R/canadian_eez-004b3c51.R
+description:
+  name: Canadian Exclusive Economic Zone
+  description: Canadian Exclusive Economic Zone
+  access_date: '2023-04-17'
+  contacts:
+  - contact_id: 66
+    first_name: ''
+    last_name: ''
+    organization: Marine Regions
+    department: ''
+    role: ''
+    email: info@marineregions.org
+    phone: ''
+  citekey: fmi2019
+  url: http://marineregions.org/mrgid/8493
+  uuid: .na.character
+  availability: open

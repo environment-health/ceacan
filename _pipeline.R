@@ -1,22 +1,13 @@
 library(devtools)
 load_all()
-library(pipefn)
+library(pipedat)
 
 pipeline <- function() {
   # Get area of interest 
-  get_aoi()
+  get_aoi("canadian_eez")
   
   # Get and format data
   pipeflow()
-    
-  # Prepare data 
-  data_prep()
-  
-  # Cluster analysis
-  make_cluster()
-  
-  # First figures
-  scatter()
   
   # Report 
   render_report()
