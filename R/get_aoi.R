@@ -18,7 +18,7 @@ get_aoi <- function(type) {
     )    
   }
 
-  if (type = "canadian_eez") {
+  if (type == "canadian_eez") {
     on.exit(sf::sf_use_s2(TRUE), add = TRUE)
     sf::sf_use_s2(FALSE)
 

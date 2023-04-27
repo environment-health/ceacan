@@ -1,0 +1,27 @@
+pipeline:
+  pipeline_id: c08e9141
+  pipeline_type: data
+  creators: []
+  date_created: '2023-04-27'
+  url: https://github.com/Ecosystem-Health/pipedat/blob/main/R/halpern-c08e9141.R
+description:
+  name: Global cumulative human impacts assessments in 2008 and 2013
+  description: Data from the assessments of global marine cumulative human impacts
+    in 2008 and 2013
+  access_date: '2023-04-27'
+  contacts:
+  - contact_id: 46
+    first_name: Benjamin
+    last_name: S. Halpern
+    organization: University of California
+    department: Bren School of Environmental Science and Management
+    role: Professor
+    email: halpern@bren.ucsb.edu
+    phone: ''
+  citekey:
+  - halpern2008a
+  - halpern2015
+  - halpern2015a
+  url: https://knb.ecoinformatics.org/#view/doi:10.5063/F1S180FS
+  uuid: .na.character
+  availability: open

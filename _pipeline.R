@@ -8,7 +8,7 @@ pipeline <- function() {
   
   # Get and format data
   pipeflow()
-  
+
   # Report 
   render_report()
 }
