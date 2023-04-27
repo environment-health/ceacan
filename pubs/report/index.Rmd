@@ -1,14 +1,17 @@
 ---
-title: ceacan
+title: "Canadian-wide cumulative effects assessment"
+subtitle: "Exploratory report"
 author: "David Beauchesne"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 documentclass: scrbook
-bibliography: [ceacan.bib]
+bibliography: [pipedat.bib, ceacan.bib]
 # biblio-style: apalike
 csl: frontiers.csl
 link-citations: yes
 colorlinks: yes
+lot: yes
+lof: yes
 fontsize: 12pt
 monofont: "Courier"
 monofontoptions: "Scale=0.7"
@@ -16,9 +19,21 @@ site: bookdown::bookdown_site
 always_allow_html: true
 ---
 
-<!-- 
+<!-- description: "TO WRITE"
+url: 'https\://bookdown.org/yihui/bookdown/'
+github-repo: rstudio/bookdown
+cover-image: images/cover.jpg -->
+
+<!--
+setwd("./report")
 suppressWarnings(bookdown::render_book("index.Rmd", "bookdown::gitbook"))
+setwd("../")
 -->
+
+<!--
+<img src="https://img.shields.io/badge/Zone-Fluvial-brightgreen">
+-->
+
 
 ```{r setup, include = FALSE, purl = FALSE}
 knitr::opts_chunk$set(
@@ -35,99 +50,22 @@ knitr::opts_chunk$set(
   width = 120#,
   # table.attr = 'class="flat-table"'
 )
+
+
+
+# Load project package
+# library(compendium)
 ```
 
-# Project description
+# {-}
 
-The goal of this project is to do an assessment of the exposure of canadian communities to social pressures in the context of the covid pandemic. 
+David Beauchesne, Ph.D. <br/>
+Postdoctoral researcher<br/>
+david.beauchesne@hotmail.com<br/>
 
-The plan is to take large scale Canadian data associated with social vulnerabilities and associate them with data of covid cases and deaths resulting from the pandemic. 
+<!--
+#### Citation {-}
 
-
-# Methods 
-
-## Data 
-
-### Canadian communities 
-
-#### Geolocated placenames 
-
-The [geolocated placenmes](https://open.canada.ca/data/en/dataset/fe945388-1dd9-4a4a-9a1e-5c552579a28c) dataset provides the coordinates of all named places across Canada, including cities, villages, First Nations Communities, etc [@isedc2020]. This dataset contains 10676 geolocated placenames across all of Canada. We use these locations as a proxy of Canadian communities locations. 
-
-#### First Nations location 
-
-The [First Nations location](https://open.canada.ca/data/en/dataset/b6567c5c-8339-4055-99fa-63f92114d9e4) dataset was used to identify the locations of First Nations across Canada [@isc2022]. This dataset contains the location of 637 First Nations communities. While the locations of the First Nations communities in Canada are included in the geolocated placenames dataset, we used this dataset to be certain that the names of the First Nations were appropriate. We identified and removed the coordinates in the geolocated placemanes dataset that were closest to each First Nations locations; we then merged the First Nations locations with the geolocated placenames to form a single dataset. 
-
-#### Inuit Communities location
-
-The [Inuit Communities location](https://open.canada.ca/data/en/dataset/2bcf34b5-4e9a-431b-9e43-1eace6c873bd) dataset was used to identify the locations of Inuit communities across Canada [@cirnac2020]. This dataset contains the location of 53 Inuit Communities. As with the First Nations location dataset, the Inuit Communities locations are included in the geolocated placenames, yet we used this dataset to be certain of Inuit Community names. The same approach was used to integrate both datasets together (see previous section).
-
-### Social vulnerabilities
-
-So far, we characterized social vulnerabilities using three main sources of data to obtain the following list: 
-
-- Proximity to employment
-- Proximity to child care
-- Proximity to primary education
-- Proximity to secondary education
-- Dwelling condition
-- Housing suitability
-- Acceptable housing
-- Proximity to waste treatment and disposal facilities
-- Proximity to water and wastewater systems
-- Proximity to longterm care facilities
-- Proximity to critical care facilities
-- latitude 
-
-Below is a brief description of the data and how the were processes.
-
-#### Proximity measures database 
-
-The [proximity measures database](https://open.canada.ca/data/en/dataset/a2093d3a-7597-456a-bacf-c6a7f319ddcb) is the result of a collaboration between Statistics Canada and Canada Mortgage and Housing Corporation that aimed at implementing a set of proximity measures to services and amenities across Canada [@statisticscanada2020c; @statisticscanada2020d]. The scale of the assessment is at dissemination block level from Statistics Canada, which results in ~500 000 records. In essence, the proximity measurements assess the distance of each diseamination block with each amenities and services considered (see [here](https://www150.statcan.gc.ca/n1/pub/17-26-0002/172600022020001-eng.htm) for more details on the methods). Each measurement is normalized between 0 and 1, 0 being the closest and 1 the farthest from a service or amenity. The proximity measures included are proximities to:
-
-- employment
-- grocery stores
-- pharmacies
-- health care
-- child care
-- primary education
-- secondary education
-- public transit
-- neighborhood parks
-- libraries
-
-
-For our work, we are using those proximity measurements as a proxy of social vulnerability for communities located in each dissemintation block. We thus intersected each canadian community with the proximity measures database to extract the value of proximities. For the first iteration of our work, we are considering all 10 proximity measures available in the database. 
-
-#### Housing statistics 
-
-We also characterized the social vulnerability of canadian communities based on housing conditions. Those data are available through Statistics Canada censuses. More specifically, we used [dwelling condition](https://www150.statcan.gc.ca/n1/tbl/csv/98100233-eng.zip) [@statisticscanada2022d], [housing suitability](https://www150.statcan.gc.ca/n1/tbl/csv/98100237-eng.zip) [@statisticscanada2022c] and [acceptable housing](https://www150.statcan.gc.ca/n1/tbl/csv/98100246-eng.zip) [@statisticscanada2022e] data available from the 2021 Canadian census at the [census subdivision](https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcsd000b21a_e.zip) scale [@statisticscanada2022f; @statisticscanada2022]. 
-
-The dwelling condition identified, among other things, the number of houses that are in need of major repairs in each subdivision census. Housing suitability, meanwhile, evaluates the suitability of a house as a function of its capacity and the number of occupants to provide an assessment of the number of houses where household size is not suitable in each census subdividion. Finally, acceptable housing is evaluated as a function of adequacy (*i.e.* house not requiring any major repars), affordability (*i.e.* shelter costs less than 30% of total before-tax household income), and suitability (*i.e.* house has enough bedrooms for the size and composition of household) thresholds. We used number of houses that fell below any of the acceptabiliy thresholds in census subdivision as a measure of social vulnerability. 
-
-For each of the housing statistics considered, we evaluated the percent of socially vulnerable houses as the intensity of social vulnerability within each census subdivision. We then intersected each Canadian community with census subdivisions to identify the intensity of housing vulnerability to which Canadian communities were exposed. 
-
-
-#### Water and wastewater systems 
-
-We characterized accessibility to water and wastewater systems using the [National Pollutant Release Inventory (NPRI)](https://open.canada.ca/data/en/dataset/40e01423-7728-429c-ac9d-2954385ccdfb) [@eccc2022]. The NPRI dataset provides an inventory of pollutant releases, disposals and transfers for recycling between 1993 and 2020. The dataset contains the locations of all reporting facilities and the types of sectors to which they belong. We extracted all reporting facilities that belonged 1) to Waste Treatment and Disposal and 2) to Water and Wastewater Systems to identify the locations of such facilities across Canada. We then measured the distance of each Canadian community to the locations of reporting facilities. Canadian communities located beyond 250 km of a facility were given the value of 250 to cap the maximum distance considered. All distances were then normalized by dividing by 250 to obtain an index between 0 and 1, with Canadian communities closest to water and wastewater systems receiving a value of 1, and those farthest a value of 1. 
-
-
-### COVID-19 data 
-
-The COVID-19 data used comes from an initiative called the [Timeline of COVID-19 in Canada (`CovidTimelineCanada`)](https://github.com/ccodwg/CovidTimelineCanada) [@CovidTimelineCanada]. This data repository is the result of the integration of multiple datasets nationally and provide data that is updated daily for all of Canada. The data are available at the scales of Canada, of the provinces/territories, and of the health regions. Here, we used the data at the health region scale, which is provided for daily cases and deaths from 2020-01-24 to today. For more information, visit the [CovidTimelineCanada](https://github.com/ccodwg/CovidTimelineCanada) GitHub repository.
-
-For now, we used cumulative cases and deaths in each health region to evaluate the severity of the pandemic. We then intersected each Canadian community with the COVID-19 health regions to evaluate the severity of the pandemic to which each community was exposed to since the beginning of the outbreak. 
-
-## Data transformation 
-
-All social vulnerabilities considered are relative and range from 0 to 1. A value of 0 means that a community is least vunerable, while a value of 1 means that a community is most vulnerable compared to other communities across the country. 
-
-
-# Some points to consider
-
-## Downscaling
-
-It might be interesting to downscale the analysis to Statistics Canada's census subdivision scale. An example of such an approach was used by @adegun2021 in Manitoba. Before I can do that, however, I would need to rework the health regions provided by the [covidtimelinecanada](https://github.com/ccodwg/CovidTimelineCanada) project, since they are not the same as the health regions from Statistics Canada. There is a short [description](https://github.com/ccodwg/CovidTimelineCanada/tree/main/geo) of the modifications made to the shapefiles in the covidtimelinecanada project, but essentially it boils down to Saskatchewan and British-Columbia having different covid reporting regions than the Statistics Canada health regions. Furthermore, the outline of health regions from the covid data is too simplified, I'm losing a lot of data along the coast. This means that I must either modify the polygons, or use an analysis to identify the closest polygons to each placenames rather than an intersect approach.
-
+Beauchesne D (2023) Cumulative effects of natural and human drivers on food webs in the offshore Scotian Shelf Bioregion to support Marine Spatial Planning. url: 
+-->
 
